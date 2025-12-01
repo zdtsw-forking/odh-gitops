@@ -11,3 +11,6 @@ oc delete --ignore-not-found deployment -n openshift-jobset-operator -l operator
 oc patch jobsetoperator cluster --type=merge -p='{"metadata":{"finalizers":null}}'
 oc delete --ignore-not-found crd jobsetoperator
 oc delete --ignore-not-found namespace openshift-jobset-operator
+
+# Remove kueue
+oc delete --ignore-not-found crd kueues.kueue.openshift.io
