@@ -14,3 +14,6 @@ oc delete --ignore-not-found namespace openshift-jobset-operator
 
 # Remove kueue
 oc delete --ignore-not-found crd kueues.kueue.openshift.io
+
+# Remove keda CRD
+oc delete --ignore-not-found crd clustertriggerauthentications.keda.sh kedacontrollers.keda.sh scaledjobs.keda.sh scaledobjects.keda.sh triggerauthentications.keda.sh
