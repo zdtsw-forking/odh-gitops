@@ -165,62 +165,72 @@ echo "Step 2: Running custom verification checks..."
 echo ""
 
 # cert-manager: Verify pods are running (CSV success doesn't guarantee pod readiness)
-echo "Checking cert-manager pods..."
-if ! wait_for_resource "cert-manager" "pods" "app.kubernetes.io/instance=cert-manager"; then
-    exit 1
+if [[ -v "OPERATORS[openshift-cert-manager-operator]" ]]; then
+    echo "Checking cert-manager pods..."
+    if ! wait_for_resource "cert-manager" "pods" "app.kubernetes.io/instance=cert-manager"; then
+        exit 1
+    fi
+    echo "✓ cert-manager pods are running"
 fi
-echo "✓ cert-manager pods are running"
+
+# cluster-observability-operator: Verify pods are running
+if [[ -v "OPERATORS[cluster-observability-operator]" ]]; then
+    echo "Checking cluster-observability-operator pods..."
+    if ! wait_for_resource "openshift-cluster-observability-operator" "pods" "app.kubernetes.io/part-of=observability-operator"; then
+        exit 1
+    fi
+    echo "✓ cluster-observability-operator pods are running"
+fi
+
+# tempo-operator: Verify pods are running
+if [[ -v "OPERATORS[tempo-product]" ]]; then
+    echo "Checking tempo-operator pods..."
+    if ! wait_for_resource "openshift-tempo-operator" "pods" "app.kubernetes.io/part-of=tempo-operator"; then
+        exit 1
+    fi
+    echo "✓ tempo-operator pods are running"
+fi
+
+# custom-metrics-autoscaler: Verify all KEDA component pods are running
+if [[ -v "OPERATORS[openshift-custom-metrics-autoscaler-operator]" ]]; then
+    echo "Checking custom-metrics-autoscaler (KEDA) pods..."
+    if ! wait_for_resource "openshift-keda" "pods" "app=keda-operator"; then
+        exit 1
+    fi
+    echo "✓ custom-metrics-autoscaler keda-operator pods are running"
+
+    if ! wait_for_resource "openshift-keda" "pods" "app=keda-metrics-apiserver"; then
+        exit 1
+    fi
+    echo "✓ custom-metrics-autoscaler keda-metrics-apiserver pods are running"
+
+    if ! wait_for_resource "openshift-keda" "pods" "app=keda-admission-webhooks"; then
+        exit 1
+    fi
+    echo "✓ custom-metrics-autoscaler keda-admission-webhooks pods are running"
+fi
+
+# rhcl-operator: Verify pods are running
+if [[ -v "OPERATORS[rhcl-operator]" ]]; then
+    echo "Checking rhcl-operator pods..."
+    # check kuadrant-console-plugin pods
+    if ! wait_for_resource "kuadrant-system" "pods" "app=kuadrant-console-plugin"; then
+        exit 1
+    fi
+    # check authorino-operator pods
+    if ! wait_for_resource "kuadrant-system" "pods" "control-plane=authorino-operator"; then
+        exit 1
+    fi
+    # check dns-operator-controller pods
+    if ! wait_for_resource "kuadrant-system" "pods" "control-plane=dns-operator-controller-manager"; then
+        exit 1
+    fi
+    # check limitador-operator pods
+    if ! wait_for_resource "kuadrant-system" "pods" "control-plane=controller-manager"; then
+        exit 1
+    fi
+    echo "✓ rhcl-operator pods are running"
+fi
 
 echo ""
 echo "✓ All dependencies are installed and ready"
-
-# cluster-observability-operator: Verify pods are running
-echo "Checking cluster-observability-operator pods..."
-if ! wait_for_resource "openshift-cluster-observability-operator" "pods" "app.kubernetes.io/part-of=observability-operator"; then
-    exit 1
-fi
-echo "✓ cluster-observability-operator pods are running"
-
-# tempo-operator: Verify pods are running
-echo "Checking tempo-operator pods..."
-if ! wait_for_resource "openshift-tempo-operator" "pods" "app.kubernetes.io/part-of=tempo-operator"; then
-    exit 1
-fi
-echo "✓ tempo-operator pods are running"
-
-# custom-metrics-autoscaler: Verify all KEDA component pods are running
-echo "Checking custom-metrics-autoscaler (KEDA) pods..."
-if ! wait_for_resource "openshift-keda" "pods" "app=keda-operator"; then
-    exit 1
-fi
-echo "✓ custom-metrics-autoscaler keda-operator pods are running"
-
-if ! wait_for_resource "openshift-keda" "pods" "app=keda-metrics-apiserver"; then
-    exit 1
-fi
-echo "✓ custom-metrics-autoscaler keda-metrics-apiserver pods are running"
-
-if ! wait_for_resource "openshift-keda" "pods" "app=keda-admission-webhooks"; then
-    exit 1
-fi
-echo "✓ custom-metrics-autoscaler keda-admission-webhooks pods are running"
-
-# rhcl-operator: Verify pods are running
-echo "Checking rhcl-operator pods..."
-# check kuadrant-console-plugin pods
-if ! wait_for_resource "kuadrant-system" "pods" "app=kuadrant-console-plugin"; then
-    exit 1
-fi
-# check authorino-operator pods
-if ! wait_for_resource "kuadrant-system" "pods" "control-plane=authorino-operator"; then
-    exit 1
-fi
-# check dns-operator-controller pods
-if ! wait_for_resource "kuadrant-system" "pods" "control-plane=dns-operator-controller-manager"; then
-    exit 1
-fi
-# check limitador-operator pods
-if ! wait_for_resource "kuadrant-system" "pods" "control-plane=controller-manager"; then
-    exit 1
-fi
-echo "✓ rhcl-operator pods are running"

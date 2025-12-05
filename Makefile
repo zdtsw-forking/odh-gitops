@@ -133,9 +133,10 @@ remove: kustomize ## Remove kustomize directory as passed as argument
 .PHONY: remove-all-dependencies
 remove-all-dependencies:
 	@echo "Removing all dependencies..."
+	@bash ./scripts/remove-dependencies-pre.sh
 	@$(MAKE) remove FOLDER=configurations
 	@$(MAKE) remove FOLDER=dependencies
-	@bash ./scripts/remove-dependencies.sh
+	@bash ./scripts/remove-dependencies-post.sh
 	@echo "All dependencies removed successfully! ✓"
 
 .PHONY: prepare-authorino-tls
