@@ -286,14 +286,30 @@ dependencies:
 ```
 
 **How it works:**
-- **Without `version`**: OLM installs the latest operator version from the channel
-- **With `version`**: OLM installs the specified version (`startingCSV: rhcl-operator.v1.2.1`)
+- **Without `version`**: OLM installs the latest operator version from the channel and upgrades automatically
+- **With `version`**: OLM installs the specified version (`startingCSV: rhcl-operator.v1.2.1`) and **automatically sets `installPlanApproval: Manual`** to prevent automatic upgrades
 - The version must exist in the specified channel or the subscription will fail
+
+**Install Plan Approval Logic:**
+1. **Only `installPlanApproval` set**: Uses the specified approval mode
+2. **Only `version` set**: Auto-sets `installPlanApproval: Manual` to lock the version
+3. **Both `version` and `installPlanApproval` set**: Uses both (useful for minimum version scenarios)
+4. **Neither set**: Explicitly sets `installPlanApproval: Automatic`
+
+**Example - Override to allow upgrades despite version pinning:**
+```yaml
+dependencies:
+  rhcl:
+    olm:
+      version: v1.2.1  # Minimum version
+      installPlanApproval: Automatic  # Still allow auto-upgrades
+```
 
 **Use cases:**
 - Testing with a known-good version
 - Ensuring consistent deployments across environments
-- Avoiding automatic upgrades to newer versions
+- Preventing automatic upgrades to newer versions
+- Setting a minimum version while still allowing upgrades
 
 ## Values Reference
 
