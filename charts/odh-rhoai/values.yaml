@@ -365,8 +365,10 @@ dependencies:
     olm:
       channel: stable
       name: rhcl-operator
-      namespace: kuadrant-system
+      namespace: openshift-operators
     config:
+      # -- Namespace where Kuadrant CR and operands are deployed
+      namespace: kuadrant-system
       # -- Enable Authorino TLS configuration
       tlsEnabled: false
       # -- Kuadrant CR spec (user can add any fields)

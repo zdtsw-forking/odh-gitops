@@ -2,6 +2,10 @@
 {{- $shouldInstall := include "rhoai-dependencies.shouldInstall" (dict "dependencyName" "rhcl" "dependency" $dep "dependencies" .Values.dependencies "components" .Values.components "services" .Values.services) -}}
 {{- if eq $shouldInstall "true" }}
 {{- if eq (include "rhoai-dependencies.isOlmMode" $) "true" }}
-{{ include "rhoai-dependencies.operator.olm" (dict "name" $dep.olm.name "namespace" $dep.olm.namespace "channel" $dep.olm.channel "root" $) }}
+{{- /* Create kuadrant-system namespace for later Kuadrant CR to use*/ -}}
+{{ include "rhoai-dependencies.operator.namespace" (dict "namespace" $dep.config.namespace "root" $) }}
+---
+{{- /* openshift-operators already has namespace and global OperatorGroup, so only create Subscription */ -}}
+{{ include "rhoai-dependencies.operator.subscription" (dict "name" $dep.olm.name "namespace" $dep.olm.namespace "channel" $dep.olm.channel "root" $) }}
 {{- end }}
 {{- end }}
