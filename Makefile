@@ -201,13 +201,13 @@ CHART_PATH ?= $(CHARTS_DIR)/$(if $(CHART_NAME),$(CHART_NAME),odh-rhoai)
 
 # Snapshot configuration
 HELM_DOCS_VERSION ?= 37d3055fece566105cf8cff7c17b7b2355a01677 # v1.14.2
-HELM_SCHEMA_VERSION ?= 2.3.0
+HELM_SCHEMA_VERSION ?= 0.21.3
 ##@ Helm Chart utilities
 .PHONY: helm-schema-install
 helm-schema-install: ## Install helm-schema plugin for auto-generating values.schema.json
 	@if ! helm plugin list | grep -q "schema"; then \
 		echo "Installing helm-schema plugin..."; \
-		helm plugin install https://github.com/losisin/helm-values-schema-json.git --version v$(HELM_SCHEMA_VERSION); \
+		helm plugin install https://github.com/dadav/helm-schema --version $(HELM_SCHEMA_VERSION); \
 	else \
 		echo "helm-schema plugin already installed"; \
 	fi
@@ -216,26 +216,33 @@ helm-schema-install: ## Install helm-schema plugin for auto-generating values.sc
 helm-schema: helm-schema-install ## Generate values.schema.json for chart
 	@if [ -n "$(CHART_NAME)" ]; then \
 		echo "Generating schema for $(CHART_NAME)..."; \
-		if [ "$(CHART_NAME)" = "odh-rhoai" ]; then \
-			helm schema -input $(CHARTS_DIR)/$(CHART_NAME)/values.yaml -output $(CHARTS_DIR)/$(CHART_NAME)/values.schema.json \
-				-schemaRoot.title "ODH/RHOAI Dependencies Helm Chart Values" \
-				-schemaRoot.description "Configuration values for the ODH/RHOAI Dependencies Helm chart"; \
-		else \
-			helm schema -input $(CHARTS_DIR)/$(CHART_NAME)/values.yaml -output $(CHARTS_DIR)/$(CHART_NAME)/values.schema.json; \
+		if ! grep -q '@schema' "$(CHARTS_DIR)/$(CHART_NAME)/values.yaml"; then \
+			echo "Skipping $(CHART_NAME) (no @schema annotations)"; \
+			exit 0; \
 		fi; \
+		helm schema \
+			--chart-search-root "$(CHARTS_DIR)/$(CHART_NAME)" \
+			--add-schema-reference \
+			--helm-docs-compatibility-mode \
+			--skip-auto-generation required \
+			--append-newline \
+			--no-dependencies; \
 	else \
 		echo "Generating schemas for all charts..."; \
-		for chart in $(CHARTS_DIR)/*/values.yaml; do \
-			chart_dir=$$(dirname $$chart); \
-			chart_name=$$(basename $$chart_dir); \
-			echo "  Generating schema for $$chart_name..."; \
-			if [ "$$chart_name" = "odh-rhoai" ]; then \
-				helm schema -input $$chart_dir/values.yaml -output $$chart_dir/values.schema.json \
-					-schemaRoot.title "ODH/RHOAI Dependencies Helm Chart Values" \
-					-schemaRoot.description "Configuration values for the ODH/RHOAI Dependencies Helm chart" || echo "  Skipped $$chart_name (no schema annotations)"; \
-			else \
-				helm schema -input $$chart_dir/values.yaml -output $$chart_dir/values.schema.json || echo "  Skipped $$chart_name (no schema annotations)"; \
+		for chart in "$(CHARTS_DIR)"/*/values.yaml; do \
+			chart_dir=$$(dirname "$$chart"); \
+			chart_name=$$(basename "$$chart_dir"); \
+			if ! grep -q '@schema' "$$chart_dir/values.yaml"; then \
+				echo "Skipping $$chart_name (no @schema annotations)"; \
+				continue; \
 			fi; \
+			echo "Generating schema for $$chart_name..."; \
+			helm schema \
+				--chart-search-root "$$chart_dir" \
+				--helm-docs-compatibility-mode \
+				--skip-auto-generation required \
+				--append-newline \
+				--no-dependencies; \
 		done; \
 	fi
 
