@@ -252,3 +252,21 @@ true
 {{- end -}}
 {{- end }}
 
+{{/*
+=============================================================================
+Validate WVA dependency requirements
+WVA requires CMA to be enabled
+Fails the template rendering if WVA is Managed but CMA is not enabled
+TODO: once WVA gets GA we should flip default to Managed
+=============================================================================
+*/}}
+{{- define "rhoai-dependencies.validate-wva-cma" -}}
+{{- $wvaState := .Values.components.kserve.dsc.wva.managementState | default "Removed" -}}
+{{- $cmaEnabled := .Values.components.kserve.dependencies.customMetricsAutoscaler | toString -}}
+{{- if eq $wvaState "Managed" -}}
+  {{- if ne $cmaEnabled "true" -}}
+    {{- fail "ERROR: When components.kserve.dsc.wva.managementState is 'Managed', components.kserve.dependencies.customMetricsAutoscaler must be set to true" -}}
+  {{- end -}}
+{{- end -}}
+{{- end }}
+

@@ -2,6 +2,7 @@
 DataScienceCluster configuration
 Sets managementState from component configuration
 */ -}}
+{{- include "rhoai-dependencies.validate-wva-cma" . -}}
 {{- if include "rhoai-dependencies.crdExists" (dict "crdName" "datascienceclusters.datasciencecluster.opendatahub.io" "root" $) }}
 apiVersion: datasciencecluster.opendatahub.io/v2
 kind: DataScienceCluster
