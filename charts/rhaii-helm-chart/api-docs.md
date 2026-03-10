@@ -8,46 +8,38 @@ Red Hat OpenShift AI Operator Helm chart (non-OLM installation)
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| azure.cloudManager.image | string | `"quay.io/opendatahub/opendatahub-operator:latest"` |  |
-| azure.cloudManager.imagePullPolicy | string | `"Always"` |  |
-| azure.cloudManager.namespace | string | `"rhai-cloudmanager-system"` |  |
-| azure.enabled | bool | `false` |  |
-| azure.kubernetesEngine.enabled | bool | `true` |  |
-| azure.kubernetesEngine.spec.dependencies.certManager.configuration | object | `{}` |  |
-| azure.kubernetesEngine.spec.dependencies.certManager.managementPolicy | string | `"Managed"` |  |
-| azure.kubernetesEngine.spec.dependencies.gatewayAPI.configuration | object | `{}` |  |
-| azure.kubernetesEngine.spec.dependencies.gatewayAPI.managementPolicy | string | `"Managed"` |  |
-| azure.kubernetesEngine.spec.dependencies.lws.configuration | object | `{}` |  |
-| azure.kubernetesEngine.spec.dependencies.lws.managementPolicy | string | `"Managed"` |  |
-| azure.kubernetesEngine.spec.dependencies.sailOperator.configuration | object | `{}` |  |
-| azure.kubernetesEngine.spec.dependencies.sailOperator.managementPolicy | string | `"Managed"` |  |
-| components.kserve.enabled | bool | `true` |  |
-| components.kserve.spec | object | `{}` |  |
-| coreweave.cloudManager.image | string | `"quay.io/opendatahub/opendatahub-operator:latest"` |  |
-| coreweave.cloudManager.imagePullPolicy | string | `"Always"` |  |
-| coreweave.cloudManager.namespace | string | `"rhai-cloudmanager-system"` |  |
-| coreweave.enabled | bool | `false` |  |
-| coreweave.kubernetesEngine.enabled | bool | `true` |  |
-| coreweave.kubernetesEngine.spec.dependencies.certManager.configuration | object | `{}` |  |
-| coreweave.kubernetesEngine.spec.dependencies.certManager.managementPolicy | string | `"Managed"` |  |
-| coreweave.kubernetesEngine.spec.dependencies.gatewayAPI.configuration | object | `{}` |  |
-| coreweave.kubernetesEngine.spec.dependencies.gatewayAPI.managementPolicy | string | `"Managed"` |  |
-| coreweave.kubernetesEngine.spec.dependencies.lws.configuration | object | `{}` |  |
-| coreweave.kubernetesEngine.spec.dependencies.lws.managementPolicy | string | `"Managed"` |  |
-| coreweave.kubernetesEngine.spec.dependencies.sailOperator.configuration | object | `{}` |  |
-| coreweave.kubernetesEngine.spec.dependencies.sailOperator.managementPolicy | string | `"Managed"` |  |
-| enabled | bool | `true` |  |
-| imagePullSecret.dependencyNamespaces[0] | string | `"cert-manager-operator"` |  |
-| imagePullSecret.dependencyNamespaces[1] | string | `"cert-manager"` |  |
-| imagePullSecret.dependencyNamespaces[2] | string | `"openshift-lws-operator"` |  |
-| imagePullSecret.dependencyNamespaces[3] | string | `"istio-system"` |  |
-| imagePullSecret.dockerConfigJson | string | `""` |  |
-| imagePullSecret.name | string | `"rhaii-pull-secret"` |  |
-| installCRDs | bool | `true` |  |
-| labels | object | `{}` |  |
-| rhaiOperator.applicationsNamespace | string | `"redhat-ods-applications"` |  |
-| rhaiOperator.image | string | `"quay.io/opendatahub/opendatahub-operator:latest"` |  |
-| rhaiOperator.imagePullPolicy | string | `"Always"` |  |
-| rhaiOperator.namespace | string | `"redhat-ods-operator"` |  |
-| rhaiOperator.relatedImages | object | `{}` |  |
+| azure | object | `{"cloudManager":{"image":"quay.io/opendatahub/opendatahub-operator:latest","imagePullPolicy":"Always","namespace":"rhai-cloudmanager-system"},"enabled":false,"kubernetesEngine":{"enabled":true,"spec":{"dependencies":{"certManager":{"configuration":{},"managementPolicy":"Managed"},"gatewayAPI":{"configuration":{},"managementPolicy":"Managed"},"lws":{"configuration":{},"managementPolicy":"Managed"},"sailOperator":{"configuration":{},"managementPolicy":"Managed"}}}}}` | Azure cloud configuration |
+| azure.cloudManager | object | `{"image":"quay.io/opendatahub/opendatahub-operator:latest","imagePullPolicy":"Always","namespace":"rhai-cloudmanager-system"}` | Azure Cloud Manager configuration |
+| azure.cloudManager.image | string | `"quay.io/opendatahub/opendatahub-operator:latest"` | Cloud Manager container image |
+| azure.cloudManager.imagePullPolicy | string | `"Always"` | Image pull policy |
+| azure.cloudManager.namespace | string | `"rhai-cloudmanager-system"` | Cloud Manager operator namespace |
+| azure.enabled | bool | `false` | Enable Azure cloud support |
+| azure.kubernetesEngine | object | `{"enabled":true,"spec":{"dependencies":{"certManager":{"configuration":{},"managementPolicy":"Managed"},"gatewayAPI":{"configuration":{},"managementPolicy":"Managed"},"lws":{"configuration":{},"managementPolicy":"Managed"},"sailOperator":{"configuration":{},"managementPolicy":"Managed"}}}}` | Azure Kubernetes Engine configuration |
+| azure.kubernetesEngine.enabled | bool | `true` | Create AzureKubernetesEngine CR via post-install hook |
+| azure.kubernetesEngine.spec | object | `{"dependencies":{"certManager":{"configuration":{},"managementPolicy":"Managed"},"gatewayAPI":{"configuration":{},"managementPolicy":"Managed"},"lws":{"configuration":{},"managementPolicy":"Managed"},"sailOperator":{"configuration":{},"managementPolicy":"Managed"}}}` | AzureKubernetesEngine CR spec |
+| components | object | `{"kserve":{"enabled":true,"spec":{}}}` | Components configuration |
+| components.kserve | object | `{"enabled":true,"spec":{}}` | KServe component |
+| components.kserve.enabled | bool | `true` | Create Kserve CR via post-install hook |
+| components.kserve.spec | object | `{}` | Kserve CR spec |
+| coreweave | object | `{"cloudManager":{"image":"quay.io/opendatahub/opendatahub-operator:latest","imagePullPolicy":"Always","namespace":"rhai-cloudmanager-system"},"enabled":false,"kubernetesEngine":{"enabled":true,"spec":{"dependencies":{"certManager":{"configuration":{},"managementPolicy":"Managed"},"gatewayAPI":{"configuration":{},"managementPolicy":"Managed"},"lws":{"configuration":{},"managementPolicy":"Managed"},"sailOperator":{"configuration":{},"managementPolicy":"Managed"}}}}}` | CoreWeave cloud configuration |
+| coreweave.cloudManager | object | `{"image":"quay.io/opendatahub/opendatahub-operator:latest","imagePullPolicy":"Always","namespace":"rhai-cloudmanager-system"}` | CoreWeave Cloud Manager configuration |
+| coreweave.cloudManager.image | string | `"quay.io/opendatahub/opendatahub-operator:latest"` | Cloud Manager container image |
+| coreweave.cloudManager.imagePullPolicy | string | `"Always"` | Image pull policy |
+| coreweave.cloudManager.namespace | string | `"rhai-cloudmanager-system"` | Cloud Manager operator namespace |
+| coreweave.enabled | bool | `false` | Enable CoreWeave cloud support |
+| coreweave.kubernetesEngine | object | `{"enabled":true,"spec":{"dependencies":{"certManager":{"configuration":{},"managementPolicy":"Managed"},"gatewayAPI":{"configuration":{},"managementPolicy":"Managed"},"lws":{"configuration":{},"managementPolicy":"Managed"},"sailOperator":{"configuration":{},"managementPolicy":"Managed"}}}}` | CoreWeave Kubernetes Engine configuration |
+| coreweave.kubernetesEngine.enabled | bool | `true` | Create CoreWeaveKubernetesEngine CR via post-install hook |
+| coreweave.kubernetesEngine.spec | object | `{"dependencies":{"certManager":{"configuration":{},"managementPolicy":"Managed"},"gatewayAPI":{"configuration":{},"managementPolicy":"Managed"},"lws":{"configuration":{},"managementPolicy":"Managed"},"sailOperator":{"configuration":{},"managementPolicy":"Managed"}}}` | CoreWeaveKubernetesEngine CR spec |
+| enabled | bool | `true` | Enable/disable all resource creation |
+| imagePullSecret | object | `{"dependencyNamespaces":["cert-manager-operator","cert-manager","openshift-lws-operator","istio-system"],"dockerConfigJson":"","name":"rhaii-pull-secret"}` | Pull secret for private registries Use --set-file imagePullSecret.dockerConfigJson=path/to/auth.json |
+| imagePullSecret.dependencyNamespaces | list | `["cert-manager-operator","cert-manager","openshift-lws-operator","istio-system"]` | Namespaces created by dependency operators where pull secrets should be injected |
+| imagePullSecret.name | string | `"rhaii-pull-secret"` | Name of the pull secret to create in target namespaces. This name MUST not be changed as it is referred also in other installed dependencies and not yet configurable. |
+| installCRDs | bool | `true` | Install CRDs or not using the chart |
+| labels | object | `{}` | Common labels applied to all resources |
+| rhaiOperator | object | `{"applicationsNamespace":"redhat-ods-applications","image":"quay.io/opendatahub/opendatahub-operator:latest","imagePullPolicy":"Always","namespace":"redhat-ods-operator","relatedImages":{}}` | RHAI Operator configuration |
+| rhaiOperator.applicationsNamespace | string | `"redhat-ods-applications"` | Applications namespace |
+| rhaiOperator.image | string | `"quay.io/opendatahub/opendatahub-operator:latest"` | Manager container image |
+| rhaiOperator.imagePullPolicy | string | `"Always"` | Image pull policy |
+| rhaiOperator.namespace | string | `"redhat-ods-operator"` | Operator namespace |
+| rhaiOperator.relatedImages | object | `{}` | Related images env vars (RELATED_IMAGE_*) |
 

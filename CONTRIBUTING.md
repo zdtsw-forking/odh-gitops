@@ -236,7 +236,7 @@ spec:
 The JSON schema is auto-generated from `values.yaml`:
 
 ```bash
-make helm-schema              # Generates: chart/values.schema.json
+make helm-schema              # Generates: values.schema.json
 ```
 
 **Note:** The Makefile automatically regenerates the schema when running `make chart-snapshots` (via prerequisite), so you typically don't need to run this separately.
@@ -296,7 +296,7 @@ spec:
 The JSON schema is auto-generated from `values.yaml`:
 
 ```bash
-make helm-schema              # Generates: chart/values.schema.json
+make helm-schema              # Generates: values.schema.json
 ```
 
 **Note:** The Makefile automatically regenerates the schema when running `make chart-snapshots` (via prerequisite), so you typically don't need to run this separately.
