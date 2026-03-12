@@ -56,8 +56,12 @@ fi
 echo "Extracted $(wc -l < "$TMP_DIR/manifests.yaml") lines"
 
 # Clean: remove all CRDs and templates (only after successful extraction)
+# Preserved CRDs:
+#   - customresourcedefinition-servicemonitors-monitoring-coreos-com.yaml: Required by LWS operator on non-OpenShift
 echo "[2/3] Cleaning old manifests..."
-find "$CHART_DIR/crds" -name "*.yaml" -delete 2>/dev/null || true
+find "$CHART_DIR/crds" -name "*.yaml" \
+  ! -name "customresourcedefinition-servicemonitors-monitoring-coreos-com.yaml" \
+  -delete 2>/dev/null || true
 find "$CHART_DIR/templates" -name "*.yaml" \
   ! -name "namespace.yaml" \
   ! -name "kube-system-role-binding.yaml" \
