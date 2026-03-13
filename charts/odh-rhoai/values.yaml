@@ -138,8 +138,7 @@ components:
       # -- Raw deployment service config for KServe (Headless or Headed)
       rawDeploymentServiceConfig: Headless
       # -- Enables llm-d Workload Variant Autoscaler
-      # -- Requires either components.kserve.dependencies.customMetricsAutoscaler=true
-      # -- OR dependencies.customMetricsAutoscaler.enabled != false.
+      # -- Note: When run on Openshift, and set to Managed ensure Custom Metrics Autoscaler (CMA) or Prometheus Adapter is installed
       wva:
         # -- Management state for workload-variant-autoscaler (Managed or Removed)
         managementState: Removed

@@ -27,7 +27,7 @@ A Helm chart for installing ODH/RHOAI dependencies and component configurations
 | components.kserve.dsc.nim | object | `{"managementState":"Managed"}` | Enables NVIDIA NIM integration |
 | components.kserve.dsc.nim.managementState | string | `"Managed"` | Management state for NIM (Managed or Removed) |
 | components.kserve.dsc.rawDeploymentServiceConfig | string | `"Headless"` | Raw deployment service config for KServe (Headless or Headed) |
-| components.kserve.dsc.wva | object | `{"managementState":"Removed"}` | OR dependencies.customMetricsAutoscaler.enabled != false. |
+| components.kserve.dsc.wva | object | `{"managementState":"Removed"}` | Note: When run on Openshift, and set to Managed ensure Custom Metrics Autoscaler (CMA) or Prometheus Adapter is installed |
 | components.kserve.dsc.wva.managementState | string | `"Removed"` | Management state for workload-variant-autoscaler (Managed or Removed) |
 | components.kserve.gateway | object | `{"create":"auto","labels":{"istio.io/rev":"openshift-gateway"},"name":"openshift-ai-inference","namespace":"openshift-ingress","spec":{"gatewayClassName":"openshift-ai-inference","listeners":[{"allowedRoutes":{"namespaces":{"from":"All"}},"name":"https","port":443,"protocol":"HTTPS"}]}}` | Gateway configuration for KServe inference. |
 | components.kserve.gateway.create | string | `"auto"` | Flag to create the Gateway (auto, true, false). If auto, it will be created if KServe is Managed. |
