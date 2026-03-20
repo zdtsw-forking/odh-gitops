@@ -1,0 +1,86 @@
+# Enable/disable all resource creation
+enabled: true
+
+# Install CRDs or not using the chart
+installCRDs: true
+
+# Common labels applied to all resources
+labels: {}
+
+# RHAI Operator configuration
+rhaiOperator:
+  # Operator namespace
+  namespace: redhat-ods-operator
+  applicationsNamespace: redhat-ods-applications
+  # Manager container image
+  image: quay.io/opendatahub/opendatahub-operator:latest
+  # Related images env vars (RELATED_IMAGE_*)
+  relatedImages: {}
+  # Example:
+  # relatedImages:
+  #   RELATED_IMAGE_ODH_KSERVE_CONTROLLER_IMAGE: quay.io/opendatahub/kserve-controller:latest
+
+# Components configuration
+components:
+  kserve:
+    # Create Kserve CR via post-install hook
+    enabled: true
+    spec: {}
+
+# Azure cloud configuration
+azure:
+  enabled: false
+  cloudManager:
+    # Cloud Manager operator namespace
+    namespace: rhai-cloudmanager-system
+    # Cloud Manager container image
+    image: quay.io/opendatahub/opendatahub-operator:latest
+  kubernetesEngine:
+    # Create AzureKubernetesEngine CR via post-install hook
+    enabled: true
+    spec:
+      dependencies:
+        certManager:
+          configuration: {}
+          managementPolicy: Managed
+        gatewayAPI:
+          configuration: {}
+          managementPolicy: Managed
+        lws:
+          configuration: {}
+          managementPolicy: Managed
+        sailOperator:
+          configuration: {}
+          managementPolicy: Managed
+
+# CoreWeave cloud configuration
+coreweave:
+  enabled: false
+  cloudManager:
+    # Cloud Manager operator namespace
+    namespace: rhai-cloudmanager-system
+    # Cloud Manager container image
+    image: quay.io/opendatahub/opendatahub-operator:latest
+  kubernetesEngine:
+    # Create CoreWeaveKubernetesEngine CR via post-install hook
+    enabled: true
+    spec:
+      dependencies:
+        certManager:
+          configuration: {}
+          managementPolicy: Managed
+        gatewayAPI:
+          configuration: {}
+          managementPolicy: Managed
+        lws:
+          configuration: {}
+          managementPolicy: Managed
+        sailOperator:
+          configuration: {}
+          managementPolicy: Managed
+
+# Image pull secrets for private registries (list of secret names)
+imagePullSecrets: []
+# Example:
+# imagePullSecrets:
+#   - my-registry-secret

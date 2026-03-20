@@ -43,10 +43,27 @@ charts:
           - docs/examples/values-inference-only.yaml
         setFlags:
           - skipCrdCheck=true
-          
+
       - name: enable-llm-d-wva
         setFlags:
           - skipCrdCheck=true
           - components.kserve.dsc.wva.managementState=Managed
           - components.kserve.dependencies.customMetricsAutoscaler=true
 
+
+  rhaii-helm-chart:
+    snapshots:
+      - name: azure-with-related-images
+        setFlags:
+          - azure.enabled=true
+          - rhaiOperator.relatedImages.RELATED_IMAGE_ODH_KSERVE_CONTROLLER_IMAGE=quay.io/opendatahub/kserve-controller:latest
+
+      - name: with-custom-namespacew
+        setFlags:
+          - azure.enabled=true
+          - rhaiOperator.namespace=rhai-operator
+          - rhaiOperator.applicationsNamespace=rhai-applications
+
+      - name: coreweave
+        setFlags:
+          - coreweave.enabled=true
