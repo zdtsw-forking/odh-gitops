@@ -232,7 +232,7 @@ endif
 
 .PHONY: helm-verify
 helm-verify: ## Verify helm chart installation and DSC components
-	NAMESPACE=opendatahub-gitops OPERATOR_TYPE=$(OPERATOR_TYPE) ./scripts/verify-helm-chart.sh
+	NAMESPACE=rhaii-gitops OPERATOR_TYPE=$(OPERATOR_TYPE) ./scripts/verify-helm-chart.sh
 
 # Extra arguments to pass to helm commands (e.g., --set olm.source=custom-catalog)
 HELM_EXTRA_ARGS ?=
@@ -240,14 +240,14 @@ HELM_EXTRA_ARGS ?=
 .PHONY: helm-install-verify
 helm-install-verify: ## Install helm chart and verify installation
 	@echo "=== Step 1: Install operators ==="
-	helm upgrade --install odh ./$(CHART_PATH) -n opendatahub-gitops --create-namespace $(HELM_EXTRA_ARGS)
+	helm upgrade --install rhaii ./$(CHART_PATH) -n rhaii-gitops --create-namespace $(HELM_EXTRA_ARGS)
 	@echo ""
 	@echo "=== Step 2: Wait for CRDs (dependency) ==="
 	@./scripts/wait-for-crds.sh
 	@bash ./scripts/verify-dependencies.sh
 	@echo ""
 	@echo "=== Step 3: Enable DSC and DSCInitialization ==="
-	helm upgrade --install odh ./$(CHART_PATH) -n opendatahub-gitops $(HELM_EXTRA_ARGS)
+	helm upgrade --install rhaii ./$(CHART_PATH) -n rhaii-gitops $(HELM_EXTRA_ARGS)
 	@echo ""
 	@echo "=== Step 4: Verify operator and DSC installation, reducing dashboard replicas to 1 to reduce resource usage ==="
 	@echo "Waiting for odh-dashboard deployment to exist in namespace $(APPLICATIONS_NAMESPACE)..."
@@ -263,7 +263,7 @@ helm-install-verify: ## Install helm chart and verify installation
 	@$(MAKE) prepare-authorino-tls KUSTOMIZE_MODE=false
 	@echo ""
 	@echo "=== Step 6: Final helm upgrade with wait condition ==="
-	helm upgrade --install odh ./$(CHART_PATH) -n opendatahub-gitops --wait --timeout 10m $(HELM_EXTRA_ARGS)
+	helm upgrade --install rhaii ./$(CHART_PATH) -n rhaii-gitops --wait --timeout 10m $(HELM_EXTRA_ARGS)
 
 .PHONY: helm-uninstall
 helm-uninstall: ## Uninstall helm chart and all dependencies
