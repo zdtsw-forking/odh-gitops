@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Update RHAI operator Helm chart from RHDS rhods-operator git repo and cloudmanager resources.
+# Update RHAII operator Helm chart from rhods-operator repo and cloudmanager resources.
 #
 # By default, the rhods-operator repo is shallow-cloned from GitHub.
 # Use --odh-operator-dir to point to a local checkout instead.
@@ -111,6 +111,7 @@ fi
 # ==============================================================================
 
 echo "Running 'make manifests-all' in rhods-operator..."
+echo "  This generates CRDs and RBAC for ODH, RHOAI, and cloudmanager..."
 make -C "${ODH_OPERATOR_DIR}" manifests-all
 echo "  Done"
 echo ""
@@ -162,7 +163,7 @@ kustomize build "${RHAI_KUSTOMIZE_PATH}" | go run "${HELMTEMPLATE_GENERATOR_PKG}
     -c "${SCRIPT_DIR}/helmtemplate-config.yaml" \
     -o "${CHART_DIR}" \
     --template-dir "${SCRIPT_DIR}" \
-    --chart-name "rhai-on-xks-helm-chart" \
+    --chart-name "rhaii-helm-chart" \
     --default-namespace "${NAMESPACE}" \
     --chart-description "Red Hat OpenShift AI Operator Helm chart (non-OLM installation)" \
     --app-version "${APP_VERSION}"
@@ -179,7 +180,7 @@ echo "Cloudmanager Templates"
 echo "=============================================================================="
 echo ""
 echo "Configuration:"
-echo "  RHOAI Operator: ${ODH_OPERATOR_DIR}"
+echo "  RHODS Operator: ${ODH_OPERATOR_DIR}"
 echo ""
 
 for target_entry in "${CLOUD_TARGETS[@]}"; do
