@@ -24,7 +24,7 @@
 # -- Operator configuration
 operator:
   enabled: true
-  type: rhoai
+  type: rhai
 
 # =============================================================================
 # COMPONENTS

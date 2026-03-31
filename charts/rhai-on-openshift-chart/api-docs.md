@@ -1,4 +1,4 @@
-# rhai-on-openshift-chart-chart
+# rhai-on-openshift-chart
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.2.0](https://img.shields.io/badge/AppVersion-3.2.0-informational?style=flat-square)
 
@@ -125,6 +125,7 @@ A Helm chart for installing ODH/RHOAI dependencies and component configurations
 | olm.sourceNamespace | string | `"openshift-marketplace"` | Namespace of the catalog source |
 | operator.enabled | bool | `true` | Enable operator installation |
 | operator.odh | object | `{"applicationsNamespace":"opendatahub","monitoringNamespace":"opendatahub","olm":{"channel":"fast-3","name":"opendatahub-operator","namespace":"opendatahub-operator-system","source":"community-operators"}}` | ODH operator settings |
+| operator.rhai | object | `{"applicationsNamespace":"redhat-ods-applications","monitoringNamespace":"redhat-ods-monitoring","olm":{"channel":"beta","name":"rhai-operator","namespace":"redhat-ods-operator","source":"redhat-operators"}}` | RHAI operator settings |
 | operator.rhoai | object | `{"applicationsNamespace":"redhat-ods-applications","monitoringNamespace":"redhat-ods-monitoring","olm":{"channel":"beta","name":"rhods-operator","namespace":"redhat-ods-operator","source":"redhat-operators"}}` | RHOAI operator settings |
 | operator.type | string | `"odh"` | Operator type: odh (Open Data Hub) or rhoai (Red Hat OpenShift AI) |
 | services.monitoring | object | `{"dependencies":{"clusterObservability":true,"opentelemetry":true,"tempo":true},"dsci":{"alerting":{},"managementState":"Removed","metrics":{},"traces":{}}}` | Monitoring service configuration |

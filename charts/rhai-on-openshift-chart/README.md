@@ -131,7 +131,7 @@ Choose between ODH (Open Data Hub) or RHOAI (Red Hat OpenShift AI) operator:
 ```yaml
 operator:
   enabled: true
-  type: rhoai # odh | rhoai
+  type: rhai # odh | rhoai
 ```
 
 | Type | Operator | Namespace | Source |

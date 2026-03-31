@@ -56,6 +56,17 @@ operator:
       namespace: redhat-ods-operator
       source: redhat-operators
 
+  # -- RHAI operator settings
+  rhai:
+    monitoringNamespace: redhat-ods-monitoring
+    applicationsNamespace: redhat-ods-applications
+
+    olm:
+      channel: beta
+      name: rhai-operator
+      namespace: redhat-ods-operator
+      source: redhat-operators
+
 # -- Trusted CA bundle configuration
 trustedCABundle:
   # -- Management state for trusted CA bundle (Managed or Removed)

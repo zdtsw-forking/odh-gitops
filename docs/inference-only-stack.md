@@ -73,7 +73,7 @@ type:
 # -- Operator configuration
 operator:
   enabled: true
-  type: rhoai
+  type: rhai
 
 components:
   kserve:
