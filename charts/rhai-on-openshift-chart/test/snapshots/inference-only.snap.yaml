@@ -87,6 +87,7 @@ spec:
       managementState: Removed
     modelregistry:
       managementState: Removed
+      registriesNamespace: rhoai-model-registries
     ray:
       managementState: Removed
     trainer:
@@ -101,6 +102,7 @@ spec:
       managementState: Removed
     workbenches:
       managementState: Removed
+      workbenchNamespace: rhods-notebooks
 ---
 # Source: rhai-on-openshift-chart/templates/dependencies/gateway/kserve-gatewayclass.yaml
 apiVersion: gateway.networking.k8s.io/v1

@@ -62,9 +62,9 @@
         },
         "type": {
           "type": "string",
-          "enum": ["odh", "rhoai", "rhai"],
+          "enum": ["odh", "rhoai"],
           "default": "rhoai",
-          "description": "Operator type to install: odh (Open Data Hub), rhoai (Red Hat OpenShift AI), or rhai (Red Hat AI)"
+          "description": "Operator type to install: odh (Open Data Hub) or rhoai (Red Hat OpenShift AI)"
         },
         "odh": {
           "$ref": "#/definitions/operatorConfig",
@@ -73,10 +73,6 @@
         "rhoai": {
           "$ref": "#/definitions/operatorConfig",
           "description": "RHOAI operator settings"
-        },
-        "rhai": {
-          "$ref": "#/definitions/operatorConfig",
-          "description": "RHAI operator settings"
         }
       },
       "required": ["enabled", "type"],
