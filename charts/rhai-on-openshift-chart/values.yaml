@@ -63,7 +63,7 @@ operator:
 
     olm:
       channel: beta
-      name: rhai-operator
+      name: rhods-operator
       namespace: redhat-ods-operator
       source: redhat-operators
 

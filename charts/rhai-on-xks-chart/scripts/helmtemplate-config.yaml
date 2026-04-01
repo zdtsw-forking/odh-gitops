@@ -84,9 +84,9 @@ rules:
       # Add related images env vars
       - path: .spec.template.spec.containers[name=rhods-operator].env
         appendWith: |
-          {{- range $name, $value := .Values.rhaiOperator.relatedImages }}
-          - name: {{ $name }}
-            value: {{ $value }}
+          {{- range $item := .Values.rhaiOperator.relatedImages }}
+          - name: {{ $item.name | quote }}
+            value: {{ $item.value | quote }}
           {{- end }}
       # Replace manager container image with Helm template value
       - path: .spec.template.spec.containers[name=rhods-operator].image
