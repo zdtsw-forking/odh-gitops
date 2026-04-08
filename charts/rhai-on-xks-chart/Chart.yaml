@@ -2,8 +2,8 @@ apiVersion: v2
 name: rhai-on-xks-chart
 description: Red Hat OpenShift AI Operator Helm chart (non-OLM installation)
 type: application
-version: 3.4.0-ea2
-appVersion: 3.4.0-ea2
+version: 3.4.0-ea.2
+appVersion: 3.4.0-ea.2
 keywords:
   - ai
   - rhaii
