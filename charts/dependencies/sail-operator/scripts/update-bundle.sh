@@ -7,7 +7,7 @@
 
 set -e
 
-VERSION="${1:-3.2.1}"
+VERSION="${1:-3.3.0}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CHART_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
